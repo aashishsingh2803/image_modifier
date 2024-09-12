@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Image Background</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Upload Image to Remove Background</h1>
+    <form action="/remove_bg" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" id="imageInput" required>
+        <input type="submit" value="Remove Background">
+    </form>
+
+    <!-- Preview Section -->
+    <div class="preview-container">
+        <div class="preview-box">
+            <h3>Original Image</h3>
+            {% if original_image %}
+                <img id="originalPreview" src="{{ original_image }}" alt="Original Image" width="300" height="300">
+            {% else %}
+                <p>No image uploaded.</p>
+            {% endif %}
+        </div>
+
+        <div class="preview-box">
+            <h3>Processed Image</h3>
+            {% if processed_image %}
+                <img id="processedPreview" src="{{ processed_image }}" alt="Processed Image" width="300" height="300">
+            {% else %}
+                <p>No processed image available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('imageInput').onchange = function(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('originalPreview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        };
+    </script>
+</body>
+</html>
